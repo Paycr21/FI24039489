@@ -1,0 +1,6 @@
+# Ignorar archivos compilados
+*.class
+
+# Ignorar archivos de texto de entrada y salida
+input.txt
+output.txt
