@@ -1,0 +1,17 @@
+# Archivos compilados de Java
+*.class
+
+# Carpetas de compilación o IDE
+/bin/
+/out/
+/build/
+/target/
+/.vscode/
+/.idea/
+/.settings/
+/.classpath
+/.project
+
+# Archivos del sistema 
+.DS_Store
+Thumbs.db
