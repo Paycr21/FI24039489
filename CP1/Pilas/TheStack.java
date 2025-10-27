@@ -1,3 +1,6 @@
+// Fuente: ChatGPT 
+// Se corrigió el método push() para manejar el límite de la pila
+// y se ajustaron los métodos pop() y peek() para retornar null cuando está vacía.
 
 import java.util.Random;
 import java.util.Stack;
@@ -12,32 +15,24 @@ public class TheStack<Type> implements TheStackInterface<Type> {
         _capacity = capacity;
     }
 
-    // Improvement: arreglar push para manejar Overflow correctamente
     @Override
     public Boolean push(Type item) {
         if (_stack.size() >= _capacity) {
             return false; // overflow
-        } else {
-            _stack.push(item);
-            return true;
         }
+        _stack.push(item);
+        return true;
     }
 
-    // Update: retornar null si la pila está vacía
     @Override
     public Type pop() {
-        if (_stack.isEmpty()) {
-            return null;
-        }
+        if (_stack.isEmpty()) return null;
         return _stack.pop();
     }
 
-    // Update: retornar null si la pila está vacía
     @Override
     public Type peek() {
-        if (_stack.isEmpty()) {
-            return null;
-        }
+        if (_stack.isEmpty()) return null;
         return _stack.peek();
     }
 
@@ -56,14 +51,12 @@ public class TheStack<Type> implements TheStackInterface<Type> {
         return _stack.toString();
     }
 
-    // MAIN (no modificar)
     public static void main(String[] args) {
         var capacity = Integer.parseInt(args[0]);
         TheStackInterface<Double> stack = new TheStack<Double>(capacity);
 
         System.out.println("Pushing {capacity + 1}");
         var random = new Random();
-
         for (var n = 0; n <= capacity; n++) {
             var number = random.nextDouble();
             var pushed = stack.push(number);
@@ -92,4 +85,3 @@ public class TheStack<Type> implements TheStackInterface<Type> {
         System.out.println("   ↳ empty() → " + stack.empty());
     }
 }
-

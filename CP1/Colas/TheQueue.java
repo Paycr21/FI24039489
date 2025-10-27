@@ -1,6 +1,6 @@
 // Fuente: ChatGPT 
-// Se corrigieron los métodos dequeue() y getFront()
-// y se implementó getCodons() para formar las tripletas de nucleótidos.
+// Se corrigieron dequeue() y getFront() (sin if, usando pollFirst/peekFirst).
+// Se implementó getCodons() para formar tripletas y vaciar la cola.
 
 import java.util.ArrayDeque;
 import java.util.Arrays;
@@ -20,18 +20,14 @@ public class TheQueue<Type> implements TheQueueInterface<Type> {
         _queue.addLast(item);
     }
 
-    // Improvement: obtener y quitar el primer elemento sin condicionales
     @Override
     public Type dequeue() {
-        // pollFirst() devuelve null si la cola está vacía
-        return _queue.pollFirst();
+        return _queue.pollFirst(); // null si está vacía
     }
 
-    // Improvement: obtener el primer elemento sin quitarlo
     @Override
     public Type getFront() {
-        // peekFirst() devuelve null si la cola está vacía
-        return _queue.peekFirst();
+        return _queue.peekFirst(); // null si está vacía
     }
 
     @Override
@@ -44,12 +40,10 @@ public class TheQueue<Type> implements TheQueueInterface<Type> {
         return _queue.size();
     }
 
-    // Update: formar codones (ternas de nucleótidos)
     @Override
     public String[] getCodons() {
         int size = _queue.size();
         String[] codons = new String[size / 3];
-
         for (int i = 0; i < codons.length; i++) {
             StringBuilder codon = new StringBuilder();
             codon.append(_queue.pollFirst());
@@ -57,7 +51,6 @@ public class TheQueue<Type> implements TheQueueInterface<Type> {
             codon.append(_queue.pollFirst());
             codons[i] = codon.toString();
         }
-
         return codons;
     }
 
@@ -66,15 +59,9 @@ public class TheQueue<Type> implements TheQueueInterface<Type> {
         return _queue.toString();
     }
 
-    // MAIN (no modificar)
     public static void main(String[] args) {
         var amount = Integer.parseInt(args[0]);
-        String[] nucleotides = {
-                "A", // [0]
-                "C", // [1]
-                "G", // [2]
-                "T", // [3]
-        };
+        String[] nucleotides = {"A","C","G","T"};
 
         TheQueueInterface<String> queue = new TheQueue<String>();
         var random = new Random();
@@ -100,5 +87,3 @@ public class TheQueue<Type> implements TheQueueInterface<Type> {
         System.out.println("   ↳ isEmpty() → " + queue.isEmpty());
     }
 }
-
-
