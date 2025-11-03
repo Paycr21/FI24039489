@@ -5,7 +5,7 @@
 ## Información del estudiante
 
 **Nombre:** Anthony Gómez  
-**Carné:** FI24036529  
+**Carné:** FI24039489 
 **Curso:** Estructuras de Datos  
 **Profesor:** Ing. Luis Andrés Rojas Matey  
 **Universidad:** Fidélitas – Costa Rica  
