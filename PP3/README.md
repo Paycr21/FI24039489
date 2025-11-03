@@ -1,248 +1,93 @@
-# Práctica Programada 3
+# 🧾 Proyecto PP3 – Lista Circular Doblemente Enlazada
 
-| Curso                   | Estructuras de Datos                   |
-| :---------------------- | :------------------------------------- |
-| Código                  | SC-304                                 |
-| Profesor                | Luis Andrés Rojas Matey                |
-| Valor                   | 5 %                                    |
-| Fecha y hora de entrega | Lunes 3 de noviembre antes de las 6 pm |
 
-<br />
 
-- [Introducción](#introducción)
-- [Objetivo](#objetivo)
-- [Especificaciones funcionales](#especificaciones-funcionales)
-- [Especificaciones técnicas](#especificaciones-técnicas)
-- [Entregables](#entregables)
-- [Evaluación](#evaluación)
+## Información del estudiante
 
-<br />
+**Nombre:** Anthony Gómez  
+**Carné:** FI24036529  
+**Curso:** Estructuras de Datos  
+**Profesor:** Ing. Luis Andrés Rojas Matey  
+**Universidad:** Fidélitas – Costa Rica  
 
-## Introducción
+---
 
-Las estructuras de datos de tipo listas son muy utilizadas en la informática. Las hay de diferentes tipos e implementaciones.
+## Descripción del proyecto
 
-<br />
+El propósito de este proyecto fue implementar una **lista circular doblemente enlazada** en el lenguaje Java, capaz de insertar y eliminar elementos desde ambos extremos.  
+Cada nodo almacena un número aleatorio entre 0 y 9, y la aplicación permite visualizar el comportamiento de la estructura en distintas etapas.
 
-## Objetivo
+El programa realiza las siguientes operaciones:
 
-Familiarizarse con la estructura de lista (_List_) en el lenguaje de programación **Java**, creando un programa capaz de trabajar con una lista circular doblemente enlazada usando nodos con valores naturales entre cero y nueve, creados aleatoriamente.
+1. Agrega nodos al inicio y al final de la lista.  
+2. Elimina elementos desde el inicio y desde el final.  
+3. Muestra la lista en orden normal y en orden inverso.  
+4. Verifica el funcionamiento cuando se intenta eliminar más nodos de los que existen, asegurando que la lista devuelva `null` de forma segura.
 
-<br />
+Este trabajo refuerza el conocimiento de **estructuras dinámicas**, el manejo de punteros (`next` y `prev`), y la comprensión del flujo circular de datos.
 
-## Especificaciones funcionales
 
-Utilizando la _Class_ genérica `ListDoublyCircular`, implemente correctamente los siguientes métodos especificados por la _Interface_ genérica `ListInterface`:
+## Entorno de desarrollo
 
-- `addFirst`: agrega un nodo al inicio de la lista. No tiene restricción de capacidad.
+| Elemento | Detalle |
+|-----------|----------|
+| **IDE utilizado** | Visual Studio Code (VS Code) |
+| **Versión de Java** | OpenJDK 21 (LTS) |
+| **Sistema operativo** | Windows 10 (64 bits) |
+| **Compilador** | `javac` |
+| **Ejecución** | `java ListDoublyCircular n` |
 
-- `addLast`: agrega un nodo al final de la lista. No tiene restricción de capacidad.
+>  Donde `n` es un número natural que define cuántos grupos de elementos se agregan y eliminan.  
+> Por ejemplo, con `n = 3` el programa genera 12 nodos (`n * 4`) y luego los elimina progresivamente.
 
-- `removeFirst`: elimina el primer nodo de la lista retornando su valor (`data`). Si la lista está vacía, debe retornar `null`.
+---
 
-- `removeLast`: elimina el último nodo de la lista retornando su valor (`data`). Si la lista está vacía, debe retornar `null`.
+## Páginas consultadas
 
-Para lograr el objetivo, tome en cuenta lo siguiente:
+Para el desarrollo de esta práctica se consultaron fuentes teóricas y ejemplos prácticos de referencia:
 
-- Todos los demás métodos de dicha _Class_ ya están correctamente implementados, por lo que no debe modificarlos.
+- [Oracle Java SE Documentation](https://docs.oracle.com/javase/21/docs/api/)  
+- [GeeksforGeeks – Doubly Circular Linked List](https://www.geeksforgeeks.org/doubly-circular-linked-list/)  
 
-- Al ser una lista circular doblemente enlazada, esta utiliza un nodo (_Class_ genérica `NodeDoubly`) que mantiene el valor (en el atributo `data`), así como los punteros al nodo anterior (atributo `prev`) y al siguiente (atributo `next`). La implementación de dicho nodo tampoco puede ser modificada.
 
-- La lista mantiene en todo momento dos referencias (atributos):
+## Uso de inteligencia artificial
 
-  - `head`: nodo inicial/primero.
-  - `tail`: nodo final/último.
+Durante la práctica utilicé **ChatGPT (modelo GPT-5)** como **herramienta de apoyo conceptual**, principalmente para aclarar dudas sobre:
+- El comportamiento de los punteros `next` y `prev` en una estructura circular.  
+- Las diferencias entre listas simples, dobles y circulares.  
+- Cómo estructurar correctamente un archivo `README.md` en formato Markdown.
 
-- La lista vacía tiene sus referencias (`head` y `tail`) con valores nulos (`null`), tal como se puede ver en el constructor de dicha _Class_; sin embargo, los punteros de los nodos (`prev` y `next`) de sus referencias (`head` y `tail`) no pueden ser nulas (`null`). Ejemplo:
+No copié código directamente. Las explicaciones sirvieron únicamente como **referencia teórica**, y toda la implementación fue elaborada manualmente y probada de forma independiente.  
 
-```mermaid
-stateDiagram-v2
-  direction LR
-    [*] --> (null): head
-    [*] --> (null): tail
-```
-
-- Cuando la lista tiene un único elemento (una sola instancia de un nodo), sus referencias (`head` y `tail`) apuntan a dicho nodo. Así mismo, los punteros del nodo (`prev` y `next`) apuntan también al mismo nodo. Ejemplo:
-
-```mermaid
-stateDiagram-v2
-  direction LR
-    [*] --> Node: head
-    [*] --> Node: tail
-    Node --> Node: prev / next
-```
-
-- Cuando la lista tiene dos elementos (dos nodos), la referencia `head` apunta al nodo inicial, mientras que la referencia `tail` apunta al último nodo. Así mismo, los punteros de dichos nodos (`prev` y `next`) apuntan al otro nodo. Ejemplo:
-
-```mermaid
-stateDiagram-v2
-  direction LR
-    [*] --> First: head
-    [*] --> Last: tail
-    First --> Last: next
-    First --> Last: prev
-    Last --> First: next
-    Last --> First: prev
-```
-
-- Ejemplos de cuando la lista tiene más de dos elementos (nodos):
-
-```mermaid
-stateDiagram-v2
-  direction LR
-    [*] --> First: head
-    [*] --> Last: tail
-    First --> Middle: next
-    First --> Last: prev
-    Middle --> First: prev
-    Middle --> Last: next
-    Last --> Middle: prev
-    Last --> First: next
-```
-
-```mermaid
-stateDiagram-v2
-  direction LR
-    [*] --> First: head
-    [*] --> Fifth: tail
-    First --> Second: next
-    First --> Fifth: prev
-    Second --> Third: next
-    Second --> First: prev
-    Third --> Fourth: next
-    Third --> Second: prev
-    Fourth --> Fifth: next
-    Fourth --> Third: prev
-    Fifth --> First: next
-    Fifth --> Fourth: prev
-```
 
-- En resumen, se puede notar que siempre el puntero `prev` del primer nodo de la lista (referenciado por `head`) apunta al último nodo de la lista (`tail`). De igual manera, el puntero `next` del último nodo (`tail`) siempre apunta al primer nodo (`head`).
+## Preguntas y respuestas
 
-Una vez los métodos a implementar estén funcionando correctamente, la aplicación debe ejecutarse con un parámetro `n`, el cual será un número natural mayor o igual que cero. La ejecución (lo ya incluido en el método `main`) entonces efectúa lo siguiente:
 
-- Crea `n * 4` números aleatorios en un rango entre cero y nueve para agregarlos a lista: `n * 2` como nodos iniciales (`addFirst`) y `n * 2` como finales (`addLast`).
+### 1️ Si tuviera que implementar una estructura tipo **Cola (Queue)**, ¿qué tipo de lista utilizaría y por qué? ¿Y para una estructura tipo **Pila (Stack)?**
 
-- Elimina `n * 2` elementos de la lista: `n` de manera inicial (`removeFirst`) y `n` de forma final (`removeLast`).
+#### Cola (Queue)
+Para una cola implementaría una **lista circular doblemente enlazada**, porque permite insertar al final (`enqueue`) y eliminar desde el inicio (`dequeue`) de manera eficiente.  
+El uso de punteros dobles (`prev` y `next`) permite recorrer la lista en ambos sentidos, manteniendo las operaciones con una complejidad **O(1)**.  
+Además, al ser circular, evita referencias nulas y mantiene el flujo continuo de elementos, lo cual es ideal para estructuras **FIFO (First In, First Out)**.
 
-- Elimina el resto de elementos de la lista utilizando los mismos métodos (`removeFirst` y `removeLast`), pero invocándolos más veces que la cantidad remanente de nodos, para poder verificar si la implementación de los métodos toma en cuenta dichos escenarios.
+#### Pila (Stack)
+Para una pila utilizaría una **lista simplemente enlazada**, ya que en este tipo de estructura solo se manipula un extremo: la cima.  
+Las operaciones `push` y `pop` se pueden realizar directamente sobre el primer nodo, también con complejidad **O(1)**.  
+Su diseño es más simple y ocupa menos memoria, lo que la hace perfecta para el comportamiento **LIFO (Last In, First Out)**.
 
-- Imprime en la Consola cierta información de cada paso:
-  - `List {...}: [...]`: este es un arreglo hecho con [ArrayDeque](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/ArrayDeque.html) para que se ayude a verificar si su lista está comportándose igual.
-  - `Size`: el tamaño o largo de su lista; es decir, la cantidad de nodos en ella.
-  - `Empty`: _Boolean_ que indica si su lista está vacía.
-  - `First`: el primer elemento (valor del nodo en `data`) de su lista.
-  - `Last`: el último elemento (valor del nodo en `data`) de su lista.
-  - `Reverse`: su lista impresa en reversa, es decir, desde el último (referenciado por `tail`) hasta el primero (`head`), utilizando el puntero del nodo `prev` para recorrerla.
-  - `Print`: imprime su lista de nodos (valores en `data`) de manera vertical desde el primero (`head`) hasta el último (`tail`), indicando el nodo anterior (`prev`) y el nodo siguiente (`next`), así: **anterior ⇄ | actual | ⇄ siguiente**.
 
-Ejemplo de ejecución con `n = 2` (recuerde que los números naturales son aleatorios):
 
-```
-$ java ListDoublyCircular 2
+### 2️ ¿Cuál sería una **ventaja** y una **desventaja** de implementar una lista propia en lugar de usar las estructuras incluidas en Java (como `List` o `LinkedList`)?
 
-List {added: n * 4}: [2, 1, 6, 6, 7, 0, 6, 8]
- ↳ Size: 8
- ↳ Empty: false
- ↳ First: 2
- ↳ Last: 8
- ↳ Reverse: | 8 | 6 | 0 | 7 | 6 | 6 | 1 | 2 |
- ↳ Print:
-        8 ⇄ | 2 | ⇄ 1
-        2 ⇄ | 1 | ⇄ 6
-        1 ⇄ | 6 | ⇄ 6
-        6 ⇄ | 6 | ⇄ 7
-        6 ⇄ | 7 | ⇄ 0
-        7 ⇄ | 0 | ⇄ 6
-        0 ⇄ | 6 | ⇄ 8
-        6 ⇄ | 8 | ⇄ 2
+#### Ventajas:
+- Permite **comprender mejor el funcionamiento interno** de las estructuras de datos.  
+- Da **mayor control** sobre la lógica, pudiendo personalizar el comportamiento según las necesidades.  
+- Fomenta el aprendizaje sobre **punteros, referencias y manejo de memoria dinámica**.  
+- Refuerza la capacidad de **analizar y resolver errores lógicos** en estructuras complejas.
 
-List {removed: n * 2}: [6, 6, 7, 0]
- ↳ Size: 4
- ↳ Empty: false
- ↳ First: 6
- ↳ Last: 0
- ↳ Reverse: | 0 | 7 | 6 | 6 |
- ↳ Print:
-        0 ⇄ | 6 | ⇄ 6
-        6 ⇄ | 6 | ⇄ 7
-        6 ⇄ | 7 | ⇄ 0
-        7 ⇄ | 0 | ⇄ 6
+#### Desventajas:
+- Implementar una estructura desde cero **consume más tiempo** y es más propenso a errores.  
+- Puede ser menos eficiente que las versiones optimizadas incluidas en el API estándar de Java.  
+- Aumenta la complejidad de mantenimiento en programas grandes.  
+- Las estructuras estándar (`ArrayList`, `LinkedList`, etc.) ya son más estables y están ampliamente probadas.
 
-List {empty}: []
- ↳ Size: 0
- ↳ Empty: true
- ↳ First: null
- ↳ Last: null
- ↳ Reverse:
- ↳ Print:
-```
-
-<br />
-
-## Especificaciones técnicas
-
-Tal como se indicó en las especificaciones funcionales, lo único que puede modificar son los cuatro métodos previamente indicados (`addFirst`, `addLast`, `removeFirst`, `removeLast`) de la _Class_ `ListDoublyCircular`.
-
-En caso de que necesite agregar la _Interface_ o _Classes_ a algún _Package_ (por ejemplo, debido al editor/IDE utilizado), puede hacerlo. Sin embargo, no está permitido ninguna otra modificación a la _Interface_ o _Classes_, incluyendo sus atributos y otros métodos.
-
-No se debe imprimir nada en la Consola manualmente, es decir, no se debe agregar ningún `System.out.print...`, ya que lo necesario para mostrar en Consola ya está contenido en los respectivos métodos. Adicionalmente, no es permitido utilizar los bloques de _Try/Catch/Finally_ (`try {...} catch {...} finally {...}`) para "atrapar" posibles excepciones.
-
-La versión para desarrollar la práctica debe ser [**_Java SE 21 & JDK 21_**](https://docs.oracle.com/en/java/javase/21/docs/api/index.html) (_Standard Edition & Java Development Kit version 21)_, la cual es [LTS](<https://en.wikipedia.org/wiki/Java_version_history#Java_SE_21_(LTS)>) (_Long-Term Support_). Se recomienda utilizar la implementación de [OpenJDK](https://jdk.java.net/java-se-ri/21) o de [Oracle](https://www.oracle.com/java/technologies/downloads/#java21).
-
-<br />
-
-## Entregables
-
-Esta es una práctica individual, por lo que en el apartado indicado del **Campus Virtual** (con un archivo comprimido **ZIP**) o en su respectivo repositorio de **Git**, específicamente en el _Branch_ principal (`main`), debe hallarse una carpeta llamada `PP3`, la cual contenga:
-
-- Todo el código fuente. Sin embargo, no debe contener los archivos compilados, es decir, excluir cualquier archivo `.class`.
-
-  - Puede copiar el archivo [`.gitignore`](https://github.com/larmcr/2025-III-SC-304/blob/main/.gitignore) del [repositorio del profesor](https://github.com/larmcr/2025-III-SC-304) en la raíz de su repositorio para excluir los archivos `.class`.
-
-- Un archivo de documentación llamado `README.md`, hecho en [Markdown](https://www.markdownguide.org) con su respectiva sintaxis, donde se indique lo siguiente:
-
-  - Su nombre y carné.
-
-  - El IDE o editor utilizado.
-
-  - Páginas web donde halló posibles soluciones a problemas encontrados o _Snippets_ de código.
-
-  - _Prompts_ (consultas y respuestas) de los chatbots de IA (**Copilot**, **Gemini**, **ChatGPT**, etc.) que haya utilizado.
-
-    - Este puede ser el vínculo compartido de dicho(s) chatbot(s).
-
-  - La respuesta a las siguientes preguntas (deben ser respondidas por usted mismo):
-
-    - Si tuviera que implementar una estructura tipo Cola (_Queue_), ¿qué tipo de lista (simple, circular, doblemente enlazada o circular doblemente enlazada) utilizaría y por qué? ¿Y para una estructura tipo Pila (_Stack_)?
-
-    - ¿Cuál cree que podría ser una ventaja y una desventaja de utilizar una estructura de tipo lista creada por usted mismo, en vez de las opciones proveídas directamente por los módulos estándar de **Java** (como por ejemplo [List](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html))?
-
-<br />
-
-## Evaluación
-
-La siguiente tabla muestra los rubros a evaluar, siempre y cuando el proyecto compile correctamente; así mismo, en caso de no compilar satisfactoriamente, se evaluará como que no fue entregado, es decir, con cero puntos.
-
-|       | Rubros                     | Puntos |
-| :---: | :------------------------- | :----: |
-| **A** | Estructura <sup>1</sup>    |   1    |
-| **B** | Método `addFirst`          |   1    |
-| **C** | Método `addLast`           |   1    |
-| **D** | Método `removeFirst`       |   1    |
-| **E** | Método `removeLast`        |   1    |
-| **F** | Documentación <sup>2</sup> |   5    |
-|       | **Total**                  | **10** |
-
-1. Ejemplo de estructura:
-
-```
-Repositorio [directorio con su número de carné]
-└── PP3 [directorio con nombre obligatorio]
-    ├── ListDoublyCircular.java
-    ├── ListInterface.java
-    ├── NodeDoubly.java
-    └── README.md
-```
-
-2. Para el rubro de **Documentación**, se rebajará un punto por cada error ortográfico. Así mismo, si el archivo no es "renderizado" correctamente (ya que debe ser escrito usando la sintaxis del formato **Markdown**), se evaluará con cero puntos.
