@@ -1,196 +1,245 @@
 import java.util.ArrayDeque;
 import java.util.Random;
 
+/**
+ * Clase que implementa una Lista Circular Doblemente Enlazada.
+ * 
+ * En esta estructura:
+ * - Cada nodo tiene un puntero al siguiente (next) y al anterior (prev).
+ * - El último nodo apunta al primero, y el primero apunta al último.
+ * - Se mantiene referencia al inicio (head/first) y al final (tail/last).
+ * 
+ * Solo se debían implementar los métodos:
+ *  addFirst, addLast, removeFirst y removeLast.
+ */
 public class ListDoublyCircular<T> implements ListInterface<T> {
 
-    private NodeDoubly<T> first; // Primer nodo
-    private NodeDoubly<T> last;  // Último nodo
+    private NodeDoubly<T> head = null; // Primer nodo de la lista
+    private NodeDoubly<T> tail = null; // Último nodo de la lista
 
+    // Constructor: lista vacía
     public ListDoublyCircular() {
-        this.first = null;
-        this.last = null;
+        head = null;
+        tail = null;
     }
 
+   
+    // MÉTODO: addFirst
+    // Agrega un nodo al inicio de la lista
+    
     @Override
     public void addFirst(T value) {
         NodeDoubly<T> nuevo = new NodeDoubly<>(value);
 
-        if (first == null) { // lista vacía
-            first = nuevo;
-            last = nuevo;
-            first.next = first;
-            first.prev = first;
+        if (head == null) {
+            // Caso 1: lista vacía → el nodo se apunta a sí mismo
+            head = nuevo;
+            tail = nuevo;
+            head.next = head;
+            head.prev = head;
         } else {
-            nuevo.next = first;
-            nuevo.prev = last;
-            last.next = nuevo;
-            first.prev = nuevo;
-            first = nuevo;
+            // Caso 2: lista con elementos
+            nuevo.next = head;     // nuevo → apunta al que era primero
+            nuevo.prev = tail;     // nuevo → apunta al último
+            head.prev = nuevo;     // el primero → apunta atrás al nuevo
+            tail.next = nuevo;     // el último → apunta al nuevo
+            head = nuevo;          // nuevo pasa a ser el primero
         }
     }
 
+    
+    // MÉTODO: addLast
+    // Agrega un nodo al final de la lista
+    
     @Override
     public void addLast(T value) {
         NodeDoubly<T> nuevo = new NodeDoubly<>(value);
 
-        if (first == null) { // lista vacía
-            first = nuevo;
-            last = nuevo;
-            first.next = first;
-            first.prev = first;
+        if (head == null) {
+            // Caso 1: lista vacía → el nodo se apunta a sí mismo
+            head = nuevo;
+            tail = nuevo;
+            head.next = head;
+            head.prev = head;
         } else {
-            nuevo.prev = last;
-            nuevo.next = first;
-            last.next = nuevo;
-            first.prev = nuevo;
-            last = nuevo;
+            // Caso 2: lista con elementos
+            nuevo.prev = tail;     // nuevo ← apunta al que era último
+            nuevo.next = head;     // nuevo → apunta al primero
+            tail.next = nuevo;     // el último → apunta al nuevo
+            head.prev = nuevo;     // el primero ← apunta al nuevo
+            tail = nuevo;          // nuevo pasa a ser el último
         }
     }
 
+    
+    // MÉTODO: removeFirst
+    // Elimina el primer nodo y retorna su valor
+    
     @Override
     public T removeFirst() {
-        if (first == null) return null;
+        if (head == null) return null; // Lista vacía → no hay nada que borrar
 
-        T value = first.data;
+        T valor = head.data; // Guardamos el valor a retornar
 
-        if (first == last) { // un solo elemento
-            first = null;
-            last = null;
+        if (head == tail) {
+            // Caso 1: solo un elemento
+            head = null;
+            tail = null;
         } else {
-            first = first.next;
-            first.prev = last;
-            last.next = first;
+            // Caso 2: más de un elemento
+            head = head.next;   // Avanzamos el inicio
+            head.prev = tail;   // Cerramos la circularidad
+            tail.next = head;
         }
 
-        return value;
+        return valor;
+    }
+
+    /
+    // MÉTODO: removeLast
+    // Elimina el último nodo y retorna su valor
+    
+    @Override
+    public T removeLast() {
+        if (tail == null) return null; // Lista vacía
+
+        T valor = tail.data; // Guardamos el valor del nodo que se eliminará
+
+        if (head == tail) {
+            // Caso 1: solo un elemento
+            head = null;
+            tail = null;
+        } else {
+            // Caso 2: más de un elemento
+            tail = tail.prev;   // Retrocedemos el final
+            tail.next = head;   // Cerramos la circularidad
+            head.prev = tail;
+        }
+
+        return valor;
+    }
+
+    
+    // MÉTODOS YA IMPLEMENTADOS (NO MODIFICAR)
+    
+
+    @Override
+    public T getFirst() {
+        return head != null ? head.data : null;
     }
 
     @Override
-    public T removeLast() {
-        if (last == null) return null;
-
-        T value = last.data;
-
-        if (first == last) { // un solo nodo
-            first = null;
-            last = null;
-        } else {
-            last = last.prev;
-            last.next = first;
-            first.prev = last;
-        }
-
-        return value;
-    }
-
-    public T getFirst() {
-        return (first != null) ? first.data : null;
-    }
-
     public T getLast() {
-        return (last != null) ? last.data : null;
+        return tail != null ? tail.data : null;
     }
 
-    public boolean isEmpty() {
-        return first == null;
+    @Override
+    public Boolean isEmpty() {
+        return head == null;
     }
 
-    public int size() {
-        int count = 0;
+    @Override
+    public Integer getSize() {
+        int size = 0;
         if (!isEmpty()) {
-            NodeDoubly<T> current = first;
+            NodeDoubly<T> actual = head;
             do {
-                count++;
-                current = current.next;
-            } while (current != first);
+                size++;
+                actual = actual.next;
+            } while (actual != head);
         }
-        return count;
+        return size;
     }
 
-    public void printForward() {
+    @Override
+    public void printList() {
         if (!isEmpty()) {
-            NodeDoubly<T> current = first;
+            NodeDoubly<T> curr = head;
             do {
-                System.out.println("\t" + current.prev.data + " ⇄ | " + current.data + " | ⇄ " + current.next.data);
-                current = current.next;
-            } while (current != first);
+                System.out.println("\t" + curr.prev.data + " ⇄ | " + curr.data + " | ⇄ " + curr.next.data);
+                curr = curr.next;
+            } while (curr != head);
         }
     }
 
-    public void printReverse() {
+    @Override
+    public void printListInReverse() {
         if (!isEmpty()) {
-            NodeDoubly<T> current = last;
+            NodeDoubly<T> curr = tail;
             System.out.print("| ");
             do {
-                System.out.print(current.data + " | ");
-                current = current.prev;
-            } while (current != last);
+                System.out.print(curr.data + " | ");
+                curr = curr.prev;
+            } while (curr != tail);
             System.out.println();
         }
     }
 
+    
+    // MAIN (no modificar)
+    
     public static void main(String[] args) {
         int n = Integer.parseInt(args[0]);
-        ListInterface<Integer> lista = new ListDoublyCircular<>();
-        ArrayDeque<Integer> cola = new ArrayDeque<>();
+        ListInterface<Integer> list = new ListDoublyCircular<>();
+        ArrayDeque<Integer> deque = new ArrayDeque<>();
         Random random = new Random();
 
-        // Agregar elementos
+        // Agregar elementos (n * 2 al inicio y n * 2 al final)
         for (int i = 0; i < n * 2; i++) {
-            int v1 = random.nextInt(10);
-            int v2 = random.nextInt(10);
-            lista.addFirst(v1);
-            lista.addLast(v2);
-            cola.addFirst(v1);
-            cola.addLast(v2);
+            int a = random.nextInt(10);
+            int b = random.nextInt(10);
+            list.addFirst(a);
+            list.addLast(b);
+            deque.addFirst(a);
+            deque.addLast(b);
         }
 
         System.out.println();
-        System.out.println("List {added: n * 4}: " + cola);
-        System.out.println(" ↳ Size: " + ((ListDoublyCircular<?>) lista).size());
-        System.out.println(" ↳ Empty: " + lista.isEmpty());
-        System.out.println(" ↳ First: " + lista.getFirst());
-        System.out.println(" ↳ Last: " + lista.getLast());
+        System.out.println("List {added: n * 4}: " + deque);
+        System.out.println(" ↳ Size: " + list.getSize());
+        System.out.println(" ↳ Empty: " + list.isEmpty());
+        System.out.println(" ↳ First: " + list.getFirst());
+        System.out.println(" ↳ Last: " + list.getLast());
         System.out.print(" ↳ Reverse: ");
-        ((ListDoublyCircular<?>) lista).printReverse();
+        list.printListInReverse();
         System.out.println(" ↳ Print:");
-        ((ListDoublyCircular<?>) lista).printForward();
+        list.printList();
 
-        // Eliminar elementos
+        // Eliminar elementos (n al inicio y n al final)
         for (int i = 0; i < n; i++) {
-            lista.removeFirst();
-            lista.removeLast();
-            cola.removeFirst();
-            cola.removeLast();
+            list.removeFirst();
+            list.removeLast();
+            deque.removeFirst();
+            deque.removeLast();
         }
 
         System.out.println();
-        System.out.println("List {removed: n * 2}: " + cola);
-        System.out.println(" ↳ Size: " + ((ListDoublyCircular<?>) lista).size());
-        System.out.println(" ↳ Empty: " + lista.isEmpty());
-        System.out.println(" ↳ First: " + lista.getFirst());
-        System.out.println(" ↳ Last: " + lista.getLast());
+        System.out.println("List {removed: n * 2}: " + deque);
+        System.out.println(" ↳ Size: " + list.getSize());
+        System.out.println(" ↳ Empty: " + list.isEmpty());
+        System.out.println(" ↳ First: " + list.getFirst());
+        System.out.println(" ↳ Last: " + list.getLast());
         System.out.print(" ↳ Reverse: ");
-        ((ListDoublyCircular<?>) lista).printReverse();
+        list.printListInReverse();
         System.out.println(" ↳ Print:");
-        ((ListDoublyCircular<?>) lista).printForward();
+        list.printList();
 
-        // Vaciar completamente
-        while (!lista.isEmpty()) {
-            lista.removeFirst();
-            lista.removeLast();
+        // Vaciar completamente la lista
+        while (!list.isEmpty()) {
+            list.removeFirst();
+            list.removeLast();
         }
+        deque.clear();
 
-        cola.clear();
         System.out.println();
-        System.out.println("List {empty}: " + cola);
-        System.out.println(" ↳ Size: " + ((ListDoublyCircular<?>) lista).size());
-        System.out.println(" ↳ Empty: " + lista.isEmpty());
-        System.out.println(" ↳ First: " + lista.getFirst());
-        System.out.println(" ↳ Last: " + lista.getLast());
+        System.out.println("List {empty}: " + deque);
+        System.out.println(" ↳ Size: " + list.getSize());
+        System.out.println(" ↳ Empty: " + list.isEmpty());
+        System.out.println(" ↳ First: " + list.getFirst());
+        System.out.println(" ↳ Last: " + list.getLast());
         System.out.print(" ↳ Reverse: ");
-        ((ListDoublyCircular<?>) lista).printReverse();
+        list.printListInReverse();
         System.out.println(" ↳ Print:");
-        ((ListDoublyCircular<?>) lista).printForward();
+        list.printList();
     }
 }
