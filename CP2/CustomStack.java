@@ -11,8 +11,7 @@ public class CustomStack {
 
         // Actualizar
         // Implementación apoyada por ChatGPT
-        node._next = _head;
-
+        node.setNext(_head);   // insertar al inicio
         _head = node;
     }
 
@@ -22,8 +21,8 @@ public class CustomStack {
         // Actualizar
         // Implementación apoyada por ChatGPT
         if (_head != null) {
-            word = _head._value;
-            _head = _head._next;
+            word = _head.getWord();   // obtenemos la palabra
+            _head = _head.getNext();  // avanzamos al siguiente nodo
         }
 
         return word;
@@ -37,7 +36,7 @@ public class CustomStack {
         StackNode current = _head;
         while (current != null) {
             length++;
-            current = current._next;
+            current = current.getNext();   // usamos getNext()
         }
 
         return length;

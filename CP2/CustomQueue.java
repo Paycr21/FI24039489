@@ -15,10 +15,10 @@ public class CustomQueue {
             _head = node;
         } else {
             QueueNode current = _head;
-            while (current._next != null) {
-                current = current._next;
+            while (current.getNext() != null) {   // usamos getNext()
+                current = current.getNext();
             }
-            current._next = node;
+            current.setNext(node);                // usamos setNext()
         }
     }
 
@@ -28,8 +28,8 @@ public class CustomQueue {
         // Actualizar
         // Implementación apoyada por ChatGPT
         if (_head != null) {
-            index = _head._value;
-            _head = _head._next;
+            index = _head.getIndex();     // usamos getIndex()
+            _head = _head.getNext();      // avanzamos con getNext()
         }
 
         return index;
@@ -43,7 +43,7 @@ public class CustomQueue {
         QueueNode current = _head;
         while (current != null) {
             size++;
-            current = current._next;
+            current = current.getNext();   // usamos getNext()
         }
 
         return size;
@@ -57,4 +57,3 @@ public class CustomQueue {
         return builder.toString();
     }
 }
-
