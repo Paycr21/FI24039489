@@ -19,6 +19,10 @@ public class CustomGraph {
         int tgt = Arrays.binarySearch(_chars, target);
         
         // Actualizar
+        // Implementación apoyada por ChatGPT
+        if (src >= 0 && tgt >= 0) {
+            _matrix[src][tgt] = _matrix[src][tgt] + 1;
+        }
     }
 
     public String getMatrix() {

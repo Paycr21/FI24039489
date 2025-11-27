@@ -10,6 +10,8 @@ public class CustomStack {
         var node = new StackNode(word);
 
         // Actualizar
+        // Implementación apoyada por ChatGPT
+        node._next = _head;
 
         _head = node;
     }
@@ -18,6 +20,11 @@ public class CustomStack {
         String word = null;
 
         // Actualizar
+        // Implementación apoyada por ChatGPT
+        if (_head != null) {
+            word = _head._value;
+            _head = _head._next;
+        }
 
         return word;
     }
@@ -26,6 +33,12 @@ public class CustomStack {
         var length = 0;
 
         // Actualizar
+        // Implementación apoyada por ChatGPT
+        StackNode current = _head;
+        while (current != null) {
+            length++;
+            current = current._next;
+        }
 
         return length;
     }

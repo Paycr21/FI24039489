@@ -15,6 +15,27 @@ public class CustomTree {
     private TreeNode insert(TreeNode node, double tf, String word) {
 
         // Actualizar
+        // Implementación apoyada por ChatGPT
+        
+        // Si el nodo no existe, se crea uno nuevo
+        if (node == null) {
+            TreeNode newNode = new TreeNode(tf);
+            newNode.addWord(word);     // agregar la palabra a su pila
+            return newNode;
+        }
+
+        // Si el TF es menor, va al subárbol izquierdo
+        if (tf < node.getTf()) {
+            node.setLeft(insert(node.getLeft(), tf, word));
+        }
+        // Si el TF es mayor, va al subárbol derecho
+        else if (tf > node.getTf()) {
+            node.setRight(insert(node.getRight(), tf, word));
+        }
+        // TF igual → agregar palabra al nodo existente
+        else {
+            node.addWord(word);
+        }
 
         return node;
     }
